@@ -54,7 +54,7 @@ sudo mysql -e "CREATE DATABASE $DATABASE_NAME;"
 echo "Create local user ..."
 # if LOCAL_PASSWORD is blank or weak, generate random password
 if [ \( -z "$LOCAL_PASSWORD" -a "$LOCAL_PASSWORD" == "" \) -o \( $(sudo mysql -se "select VALIDATE_PASSWORD_STRENGTH('$LOCAL_PASSWORD');") -lt 50 \) ]; then
-	LOCAL_PASSWORD=$(pwgen --capitalize --numerals --symbols --ambiguous --secure 16 1)
+	LOCAL_PASSWORD=$(pwgen -cnysB -r \{\}\[\]\(\)\/\\\'\"\`\~\,\;\:\.\<\> 16 1)
 fi
 sudo mysql -e "CREATE USER '$LOCAL_USERNAME'@'localhost' IDENTIFIED BY '$LOCAL_PASSWORD';"
 sudo mysql -e "GRANT SELECT, INSERT, UPDATE, DELETE ON $DATABASE_NAME.* TO '$LOCAL_USERNAME'@'localhost';"
@@ -65,7 +65,7 @@ sudo mysql -e "FLUSH PRIVILEGES;"
 echo "Create remote user ..."
 # if REMOTE_PASSWORD is blank, generate random password
 if [ \( -z "$REMOTE_PASSWORD" -a "$REMOTE_PASSWORD" == "" \) -o \( $(sudo mysql -se "select VALIDATE_PASSWORD_STRENGTH('$REMOTE_PASSWORD');") -lt 50 \) ]; then
-	REMOTE_PASSWORD=$(pwgen --capitalize --numerals --symbols --ambiguous --secure 16 1)
+	REMOTE_PASSWORD=$(pwgen -cnysB -r \{\}\[\]\(\)\/\\\'\"\`\~\,\;\:\.\<\> 16 1)
 fi
 sudo mysql -e "CREATE USER '$REMOTE_USERNAME'@'%' IDENTIFIED BY '$REMOTE_PASSWORD';"
 sudo mysql -e "GRANT ALL ON $DATABASE_NAME.* TO '$REMOTE_USERNAME'@'%';"
