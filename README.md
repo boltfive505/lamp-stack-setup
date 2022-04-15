@@ -14,12 +14,12 @@ How to use:
   ```
   DATABASE_NAME       = "my_db"
   LOCAL_USERNAME      = "user"
-  LOCAL_PASSWORD      = ""            # if blank, will generate random password
+  LOCAL_PASSWORD      = ""            # provide a strong password. If blank or weak, will auto generate random password
   REMOTE_USERNAME     = "remote"
-  REMOTE_PASSWORD     = ""            # if blank, will generate random password
+  REMOTE_PASSWORD     = ""            # provice a strong password. If blank or weak, will auto generate random password
   DOMAIN_NAME         = "mydomain"    # your website name
   ```
-- Execute the script by typing `bash lamp-stack-setup.sh`. It will do the following
+- Execute the script by typing `sudo bash lamp-stack-setup.sh`. It will do the following
   ```
   Update the system
   Install pwgen (password generator)

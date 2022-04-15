@@ -49,7 +49,8 @@ sudo mysql -e "CREATE DATABASE $DATABASE_NAME;"
 # ----------------
 # setup local user
 # ----------------
-if [ -z "$LOCAL_PASSWORD" -a "$LOCAL_PASSWORD" == "" ]; then							# if LOCAL_PASSWORD is blank, generate random password
+# if LOCAL_PASSWORD is blank or weak, generate random password
+if [ \( -z "$LOCAL_PASSWORD" -a "$LOCAL_PASSWORD" == "" \) -o \( $(sudo mysql -se "select VALIDATE_PASSWORD_STRENGTH('$LOCAL_PASSWORD');") -lt 50 \) ]; then
 	LOCAL_PASSWORD=$(pwgen --capitalize --numerals --symbols --ambiguous --secure 16 1)
 fi
 sudo mysql -e "CREATE USER '$LOCAL_USERNAME'@'localhost' IDENTIFIED BY '$LOCAL_PASSWORD';"
@@ -58,7 +59,8 @@ sudo mysql -e "FLUSH PRIVILEGES;"
 # -----------------
 # setup remote user
 # -----------------
-if [ -z "$REMOTE_PASSWORD" -a "$REMOTE_PASSWORD" == "" ]; then							# if REMOTE_PASSWORD is blank, generate random password
+# if REMOTE_PASSWORD is blank, generate random password
+if [ \( -z "$REMOTE_PASSWORD" -a "$REMOTE_PASSWORD" == "" \) -o \( $(sudo mysql -se "select VALIDATE_PASSWORD_STRENGTH('$REMOTE_PASSWORD');") -lt 50 \) ]; then
 	REMOTE_PASSWORD=$(pwgen --capitalize --numerals --symbols --ambiguous --secure 16 1)
 fi
 sudo mysql -e "CREATE USER '$REMOTE_USERNAME'@'%' IDENTIFIED BY '$REMOTE_PASSWORD';"
@@ -84,7 +86,7 @@ sudo chmod -R 755 /var/www/$DOMAIN_NAME
 # -------------------
 # create virtual host
 # -------------------
-sudo bash -c 'cat << EOF > $VIRTUAL_HOST_DIR/$DOMAIN_NAME.conf										# create virtual host file for domain
+sudo bash -c "cat >> $VIRTUAL_HOST_DIR/$DOMAIN_NAME.conf" <<EOF							# create virtual host file for domain
 <VirtualHost *:80>
 	ServerAdmin webmaster@localhost
 	ServerName $DOMAIN_NAME
@@ -93,7 +95,7 @@ sudo bash -c 'cat << EOF > $VIRTUAL_HOST_DIR/$DOMAIN_NAME.conf										# create
 	ErrorLog ${APACHE_LOG_DIR}/error.log
 	CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
-EOF'
+EOF
 sudo a2ensite $DOMAIN_NAME.conf
 sudo a2dissite 000-default.conf
 sudo systemctl restart apache2
