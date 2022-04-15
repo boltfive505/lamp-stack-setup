@@ -84,7 +84,7 @@ sudo chmod -R 755 /var/www/$DOMAIN_NAME
 # -------------------
 # create virtual host
 # -------------------
-sudo cat <<EOF >$VIRTUAL_HOST_DIR/$DOMAIN_NAME.conf										# create virtual host file for domain
+sudo bash -c 'cat << EOF > $VIRTUAL_HOST_DIR/$DOMAIN_NAME.conf										# create virtual host file for domain
 <VirtualHost *:80>
 	ServerAdmin webmaster@localhost
 	ServerName $DOMAIN_NAME
@@ -93,7 +93,7 @@ sudo cat <<EOF >$VIRTUAL_HOST_DIR/$DOMAIN_NAME.conf										# create virtual ho
 	ErrorLog ${APACHE_LOG_DIR}/error.log
 	CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
-EOF
+EOF'
 sudo a2ensite $DOMAIN_NAME.conf
 sudo a2dissite 000-default.conf
 sudo systemctl restart apache2
@@ -113,3 +113,7 @@ HTML_FOLDER			= /var/www/$DOMAIN_NAME
 EOF
 
 echo "Setup done, enjoy!"
+
+# sudo ufw allow "Apache Full"
+# sudo ufw allow mysql
+# sudo ufw enable
