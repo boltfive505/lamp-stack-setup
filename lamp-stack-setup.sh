@@ -133,6 +133,18 @@ echo "----- PHP SETUP DONE, RESTARTING SERVICE -----"
 echo "----------------------------------------------"
 sudo systemctl restart apache2
 
+# save user values to a file
 echo
+echo "Values are saved to lamp-setup-values.txt"
+cat <<EOF >lamp-setup-values.txt
+DATABASE_NAME		= $DATABASE_NAME
+LOCAL_USERNAME		= $LOCAL_USERNAME
+LOCAL_PASSWORD		= $LOCAL_PASSWORD
+REMOTE_USERNAME		= $REMOTE_USERNAME
+REMOTE_PASSWORD		= $REMOTE_PASSWORD
+DOMAIN_NAME			= $DOMAIN_NAME
+HTML_FOLDER			= /var/www/$DOMAIN_NAME
+EOF
+
 echo "Setup done, enjoy!"
 
