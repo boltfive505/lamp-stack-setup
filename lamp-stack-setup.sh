@@ -36,8 +36,8 @@ sudo apt install mysql-server -y
 # setup mysql_secure_installation
 # -------------------------------
 sudo mysql -e "install plugin validate_password soname 'validate_password.so';"			# install validate password plugin
-sudo mysql -e "SET GLOBAL validate_password.policy = 1;"								# set password validation policy (MEDIUM)
-sudo mysql -e "UPDATE mysql.user SET Password=PASSWORD('root') WHERE User='root';"		# set root password
+sudo mysql -e "SET GLOBAL validate_password_policy = 1;"								# set password validation policy (MEDIUM)
+# sudo mysql -e "UPDATE mysql.user SET Password=PASSWORD('root') WHERE User='root';"	# set root password
 sudo mysql -e "DELETE FROM mysql.user WHERE User='';"									# remove anonymous users
 sudo mysql -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"		# remove remote root
 sudo mysql -e "DROP DATABASE test;"														# remove test database
@@ -64,11 +64,11 @@ fi
 sudo mysql -e "CREATE USER '$REMOTE_USERNAME'@'%' IDENTIFIED BY '$REMOTE_PASSWORD';"
 sudo mysql -e "GRANT ALL ON $DATABASE_NAME.* TO '$REMOTE_USERNAME'@'%';"
 sudo mysql -e "FLUSH PRIVILEGES;"
-sed -i 's/bind-address\t\t= .*/bind-address\t\t= '0.0.0.0'/' $MYSQLD_CNF_FILE			# bind-address=0.0.0.0 will enable remote connection
+sudo sed -i 's/bind-address\t\t= .*/bind-address\t\t= '0.0.0.0'/' $MYSQLD_CNF_FILE			# bind-address=0.0.0.0 will enable remote connection
 # --------------------------------------
 # enable log_bin_trust_function_creators
 # --------------------------------------
-sed -i '$ a log_bin_trust_function_creators\t\t= 1' $MYSQLD_CNF_FILE					# enable log_bin_trust_function_creators to allow CREATE FUNCTION
+sudo sed -i '$ a log_bin_trust_function_creators\t\t= 1' $MYSQLD_CNF_FILE					# enable log_bin_trust_function_creators to allow CREATE FUNCTION
 sudo systemctl restart mysql
 echo "----- DONE SETUP MYSQL SERVER -----"
 
