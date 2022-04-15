@@ -42,15 +42,7 @@ echo "--------------------------------"
 echo "----- INSTALL MYSQL SERVER -----"
 echo "--------------------------------"
 sudo apt install mysql-server -y
-sudo mysql_secure_installation
-y	# enable validate password plugin
-root	# set password
-root
-y	# continue with password
-y	# remove anonymous users
-y	# disallow remote login
-y	# remove test database
-y	# reload priviledge tables
+printf "\ny\n1\nroot\nroot\ny\ny\ny\ny\ny" | sudo mysql_secure_installation
 
 echo
 echo "----------------------------------------------"
