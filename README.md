@@ -24,7 +24,6 @@ How to use:
   Update the system
   Install pwgen (password generator)
   Install and setup apache
-      setup firewall to allow web page access
   Install and setup mysql-server
       create database
       create local user
