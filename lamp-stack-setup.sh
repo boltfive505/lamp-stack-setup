@@ -42,17 +42,33 @@ echo "--------------------------------"
 echo "----- INSTALL MYSQL SERVER -----"
 echo "--------------------------------"
 sudo apt install mysql-server -y
-printf "\ny\n1\nroot\nroot\ny\ny\ny\ny\ny" | sudo mysql_secure_installation
+
+echo
+echo "------------------------------------------------------------"
+echo "----- MYSQL SETUP (1/5): RUN mysql_secure_installation -----"
+echo "------------------------------------------------------------"
+# set password validation policy (MEDIUM)
+sudo mysql -e "SET GLOBAL validate_password.policy = 1;"
+# set root password
+sudo mysql -e "UPDATE mysql.user SET Password=PASSWORD('root') WHERE User='root';"
+# remove anonymous users
+sudo mysql -e "DELETE FROM mysql.user WHERE User='';"
+# remove remote root
+sudo mysql -e "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
+# remove test database
+sudo mysql -e "DROP DATABASE test;"
+# reload priviledge tables
+sudo mysql -e "FLUSH PRIVILEGES;"
 
 echo
 echo "----------------------------------------------"
-echo "----- MYSQL SETUP (1/4): CREATE DATABASE -----"
+echo "----- MYSQL SETUP (2/5): CREATE DATABASE -----"
 echo "----------------------------------------------"
 sudo mysql -e "CREATE DATABASE $DATABASE_NAME;"
 
 echo
 echo "-------------------------------------------------------------------"
-echo "----- MYSQL SETUP (2/4): CREATE USER FOR LOCALHOST CONNECTION -----"
+echo "----- MYSQL SETUP (3/5): CREATE USER FOR LOCALHOST CONNECTION -----"
 echo "-------------------------------------------------------------------"
 # if LOCAL_PASSWORD is blank, generate random password
 if [ -z "$LOCAL_PASSWORD" -a "$LOCAL_PASSWORD" == "" ]; then
@@ -64,7 +80,7 @@ sudo mysql -e "FLUSH PRIVILEGES;"
 
 echo
 echo "----------------------------------------------------------------"
-echo "----- MYSQL SETUP (3/4): CREATE USER FOR REMOTE CONNECTION -----"
+echo "----- MYSQL SETUP (4/5): CREATE USER FOR REMOTE CONNECTION -----"
 echo "----------------------------------------------------------------"
 # if REMOTE_PASSWORD is blank, generate random password
 if [ -z "$REMOTE_PASSWORD" -a "$REMOTE_PASSWORD" == "" ]; then
@@ -77,7 +93,7 @@ sed -i 's/bind-address\t\t= .*/bind-address\t\t= '0.0.0.0'/' $MYSQLD_CNF_FILE	# 
 
 echo
 echo "-----------------------------------------------------------------------"
-echo "----- MYSQL SETUP (4/4): ENABLING log_bin_trust_function_creators -----"
+echo "----- MYSQL SETUP (5/5): ENABLING log_bin_trust_function_creators -----"
 echo "-----------------------------------------------------------------------"
 sed -i '$ a log_bin_trust_function_creators\t\t= 1' $MYSQLD_CNF_FILE
 
@@ -97,7 +113,7 @@ echo
 echo "-----------------------------------------------"
 echo "----- PHP SETUP (1/1): CREATE HTML FOLDER -----"
 echo "-----------------------------------------------"
-sudo mkdir /var/www/$DOMAIN_NAME			# create folder to store html files
+sudo mkdir /var/www/$DOMAIN_NAME					# create folder to store html files
 sudo chown -R $USER:$USER /var/www/$DOMAIN_NAME		# give permission to the html folder
 sudo chmod -R 755 /var/www/$DOMAIN_NAME
 
@@ -117,7 +133,7 @@ cat <<EOF >$VIRTUAL_HOST_DIR/$DOMAIN_NAME.conf		# create virtual host file for d
 EOF
 sudo a2ensite $DOMAIN_NAME.conf
 sudo a2dissite 000-default.conf
-sudo apache2ctl configtest				# only for checking config status
+sudo apache2ctl configtest							# only for checking config status
 
 echo
 echo "----------------------------------------------"
