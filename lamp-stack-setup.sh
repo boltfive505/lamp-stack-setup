@@ -64,11 +64,11 @@ fi
 sudo mysql -e "CREATE USER '$REMOTE_USERNAME'@'%' IDENTIFIED BY '$REMOTE_PASSWORD';"
 sudo mysql -e "GRANT ALL ON $DATABASE_NAME.* TO '$REMOTE_USERNAME'@'%';"
 sudo mysql -e "FLUSH PRIVILEGES;"
-sudo sed -i 's/bind-address\t\t= .*/bind-address\t\t= '0.0.0.0'/' $MYSQLD_CNF_FILE			# bind-address=0.0.0.0 will enable remote connection
+sudo sed -i 's/bind-address\t\t= .*/bind-address\t\t= '0.0.0.0'/' $MYSQLD_CNF_FILE		# bind-address=0.0.0.0 will enable remote connection
 # --------------------------------------
 # enable log_bin_trust_function_creators
 # --------------------------------------
-sudo sed -i '$ a log_bin_trust_function_creators\t\t= 1' $MYSQLD_CNF_FILE					# enable log_bin_trust_function_creators to allow CREATE FUNCTION
+sudo sed -i '$ a log_bin_trust_function_creators\t\t= 1' $MYSQLD_CNF_FILE				# enable log_bin_trust_function_creators to allow CREATE FUNCTION
 sudo systemctl restart mysql
 echo "----- DONE SETUP MYSQL SERVER -----"
 
@@ -84,7 +84,7 @@ sudo chmod -R 755 /var/www/$DOMAIN_NAME
 # -------------------
 # create virtual host
 # -------------------
-cat <<EOF >$VIRTUAL_HOST_DIR/$DOMAIN_NAME.conf		# create virtual host file for domain
+sudo cat <<EOF >$VIRTUAL_HOST_DIR/$DOMAIN_NAME.conf										# create virtual host file for domain
 <VirtualHost *:80>
 	ServerAdmin webmaster@localhost
 	ServerName $DOMAIN_NAME
