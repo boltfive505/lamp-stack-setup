@@ -110,9 +110,9 @@ echo "----- DONE SETUP PHP -----"
 
 # save user values to a file
 echo
-echo "Values are saved to lamp-setup-values.txt"
-echo "Reminder to delete the file with 'rm lamp-setup-values.txt' after you get the values (especially passwords)"
-cat <<EOF >lamp-setup-values.txt
+echo "Values are saved to lamp-values.txt"
+echo "Reminder to delete the file with 'rm lamp-values.txt' after you get the values (especially passwords)"
+cat <<EOF >lamp-values.txt
 DATABASE_NAME		= $DATABASE_NAME
 LOCAL_USERNAME		= $LOCAL_USERNAME
 LOCAL_PASSWORD		= $LOCAL_PASSWORD

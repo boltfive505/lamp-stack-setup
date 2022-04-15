@@ -34,4 +34,4 @@ How to use:
       create /var/www/ folder to store html files and set folder permission
       create custom virtual host
   ```
-- After the setup is done, values (including passwords) will be saved to `lamp-setup-values.txt`. Reminder to delete the file by typing `rm lamp-setup-values.txt` after you get the values.
+- After the setup is done, values (including passwords) will be saved to `lamp-values.txt`. Reminder to delete the file by typing `rm lamp-values.txt` after you get the values.
