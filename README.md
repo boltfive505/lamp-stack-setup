@@ -8,8 +8,8 @@ IMPORTANT: Change the values inside the script before executing.
 
 How to use:
 
-- From the terminal, download by typing `wget https://raw.githubusercontent.com/boltfive505/lamp-stack-setup/main/lamp-stack-setup.sh`
-- To change the values, type `sudo nano lamp-stack-setup.sh`
+- From the terminal, download by typing `git clone https://github.com/boltfive505/lamp-stack-setup`
+- To change the values, type `sudo nano lamp-stack-setup/setup.sh`
 - Edit the following values:
   ```
   DATABASE_NAME       = "my_db"
@@ -19,7 +19,7 @@ How to use:
   REMOTE_PASSWORD     = ""            # provice a strong password. If blank or weak, will auto generate random password
   DOMAIN_NAME         = "mydomain"    # your website name
   ```
-- Execute the script by typing `sudo bash lamp-stack-setup.sh`. It will do the following
+- Execute the script by typing `sudo bash lamp-stack-setup/setup.sh`. It will do the following
   ```
   Update the system
   Install pwgen (password generator)
