@@ -89,6 +89,11 @@ echo "Create html folder ..."
 sudo mkdir /var/www/$DOMAIN_NAME														# create folder to store html files
 sudo chown -R $USER:$USER /var/www/$DOMAIN_NAME											# give permission to the html folder
 sudo chmod -R 755 /var/www/$DOMAIN_NAME
+sudo bash -c "cat >> /var/www/$DOMAIN_NAME/index.php" <<EOF								# create index.php file
+<?php
+phpinfo();
+?>
+EOF
 # -------------------
 # create virtual host
 # -------------------
