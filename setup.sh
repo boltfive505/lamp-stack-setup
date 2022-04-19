@@ -57,7 +57,7 @@ if [ \( -z "$LOCAL_PASSWORD" -a "$LOCAL_PASSWORD" == "" \) -o \( $(sudo mysql -s
 	LOCAL_PASSWORD=$(pwgen -cnysB -r \{\}\[\]\(\)\/\\\'\"\`\~\,\;\:\.\<\> 16 1)
 fi
 sudo mysql -e "CREATE USER '$LOCAL_USERNAME'@'localhost' IDENTIFIED BY '$LOCAL_PASSWORD';"
-sudo mysql -e "GRANT SELECT, INSERT, UPDATE, DELETE ON $DATABASE_NAME.* TO '$LOCAL_USERNAME'@'localhost';"
+sudo mysql -e "GRANT SELECT, INSERT, UPDATE, DELETE, EXECUTE ON $DATABASE_NAME.* TO '$LOCAL_USERNAME'@'localhost';"
 sudo mysql -e "FLUSH PRIVILEGES;"
 # -----------------
 # setup remote user
@@ -137,7 +137,3 @@ echo "	sudo ufw enable"
 
 echo
 echo "Setup done, enjoy!"
-
-# sudo ufw allow "Apache Full"
-# sudo ufw allow mysql
-# sudo ufw enable
