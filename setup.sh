@@ -69,6 +69,7 @@ if [ \( -z "$REMOTE_PASSWORD" -a "$REMOTE_PASSWORD" == "" \) -o \( $(sudo mysql 
 fi
 sudo mysql -e "CREATE USER '$REMOTE_USERNAME'@'%' IDENTIFIED BY '$REMOTE_PASSWORD';"
 sudo mysql -e "GRANT ALL ON $DATABASE_NAME.* TO '$REMOTE_USERNAME'@'%';"
+sudo mysql -e "GRANT SHOW_ROUTINE ON *.* TO '$REMOTE_USERNAME'@'%';"					# grant privilege for SHOW CREATE PROCEDURE/FUNCTION
 sudo mysql -e "FLUSH PRIVILEGES;"
 sudo sed -i 's/bind-address\t\t= .*/bind-address\t\t= '0.0.0.0'/' $MYSQLD_CNF_FILE		# bind-address=0.0.0.0 will enable remote connection
 # --------------------------------------
